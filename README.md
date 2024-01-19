@@ -8,7 +8,7 @@ to the face.
 
 Usage example:
   Note - Make sure face is centered in the photo and room is well lit. Prone to micro-distortions.
-  1. Have a folder containing some reference photos of a face you wish to detect. Have at least four photos. Name the prime reference photo 'face'.
+  1. Create a subfolder (within this program's directory) containing some reference photos of a face you wish to detect. Have at least four photos. Name the prime reference photo 'face'. Call this folder 'database'
   2. '>> Face: ' input the file path to the face you wish to use.
 
 Required modules / libraries:
