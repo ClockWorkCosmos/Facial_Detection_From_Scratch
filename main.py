@@ -75,7 +75,10 @@ def find_similarity(REFERENCE, COMPARISON):
 		if m.isclose(comp_value, ref_value):
 			similarity_score += 1
 		else:
-			similarity_score += 0
+			similarity_score += -1
+
+		if similarity_score < 0:
+			similarity_score = 0
 
 	similarity_percentile = (similarity_score / len(REFERENCE)) * 100
 
