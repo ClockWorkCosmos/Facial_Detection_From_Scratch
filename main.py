@@ -1,30 +1,3 @@
-Skip to content
-ClockWorkCosmos
-/
-Facial_Detection_From_Scratch
-
-Type / to search
-
-Code
-Issues
-Pull requests
-Actions
-Projects
-Wiki
-Security
-Insights
-Settings
-Commit
-Add files via upload
- main
-@ClockWorkCosmos
-ClockWorkCosmos committed 5 hours ago 
-1 parent 9fd7c9e
-commit f8cb1d3
-Showing 1 changed file with 108 additions and 0 deletions.
- 108 changes: 108 additions & 0 deletions108  
-main.py
-@@ -0,0 +1,108 @@
 import math as m
 import os
 import pygame
