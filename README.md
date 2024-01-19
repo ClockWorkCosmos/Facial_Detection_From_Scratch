@@ -1,7 +1,7 @@
 # Facial_Detection_From_Scratch
 Python; Machine Vision; Facial Detection
 
-!WARNING ALL PHOTOS MUST BE OF THE SAME SIZE!
+!WARNING ALL PHOTOS MUST BE OF THE SAME SIZE; OVERALL SIMILARITY IS BASED ON COLOR SIMILARITIES, NOT FACIAL FEATURES, THEREFORE THIS NOT A 100% RELIABLE PROGRAM! 
 
 Compares a face to a reference database of the desired face to detect and returns the similarity percentile. If the similarity percentile is greather than or equal to the similarity threshold, return a positive match 
 to the face.
