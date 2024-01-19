@@ -95,21 +95,31 @@ while True:
 
 	reference_directory = "database"
 
-	for filename in os.listdir(reference_directory):
-		if filename.endswith((".jpg", ".png")):
-			additional_image_path = os.path.join(reference_directory, filename)
-			additional_images.append(additional_image_path)
+	if os.path.exists("similarity_threshold.txt"):
+		with open("similarity_threshold.txt", "r") as file:
+			similarity_threshold = float(file.read())
+	else:
+		additional_images = []
+		solutions_set = []
 
-			additional_image_data = fetch_image_data(additional_image_path)
-			solutions_set.append(find_similarity(reference_image, additional_image_data))
+		for filename in os.listdir(reference_directory):
+			if filename.endswith((".jpg", ".png")):
+				additional_image_path = os.path.join(reference_directory, filename)
+				additional_images.append(additional_image_path)
 
-			additional_image_data = fetch_blackwhite_data(additional_image_path)
-			solutions_set.append(find_similarity(reference_image, additional_image_data))
+				additional_image_data = fetch_image_data(additional_image_path)
+				solutions_set.append(find_similarity(reference_image, additional_image_data))
 
-			additional_image_data = fetch_greyscale_data(additional_image_path)
-			solutions_set.append(find_similarity(reference_image, additional_image_data))
+				additional_image_data = fetch_blackwhite_data(additional_image_path)
+				solutions_set.append(find_similarity(reference_image, additional_image_data))
 
-	similarity_threshold += sum(solutions_set) / len(solutions_set) * 3
+				additional_image_data = fetch_greyscale_data(additional_image_path)
+				solutions_set.append(find_similarity(reference_image, additional_image_data))
+
+		similarity_threshold = sum(solutions_set) / len(solutions_set) * 3
+
+		with open("similarity_threshold.txt", "w") as file:
+			file.write(str(similarity_threshold))
 
 
 	try:
