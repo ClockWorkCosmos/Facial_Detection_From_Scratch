@@ -75,7 +75,7 @@ def find_similarity(REFERENCE, COMPARISON):
 		if m.isclose(comp_value, ref_value):
 			similarity_score += 1
 		else:
-			similarity_score += -1
+			similarity_score += 0
 
 	similarity_percentile = (similarity_score / len(REFERENCE)) * 100
 
@@ -95,30 +95,22 @@ while True:
 
 	reference_directory = "database"
 
-
 	for filename in os.listdir(reference_directory):
-		if filename.endswith(".jpg") or filename.endswith(".png"):
+		if filename.endswith((".jpg", ".png")):
 			additional_image_path = os.path.join(reference_directory, filename)
 			additional_images.append(additional_image_path)
+
 			additional_image_data = fetch_image_data(additional_image_path)
 			solutions_set.append(find_similarity(reference_image, additional_image_data))
-	similarity_threshold += sum(solutions_set) / len(solutions_set)
 
-	for filename in os.listdir(reference_directory):
-		if filename.endswith(".jpg") or filename.endswith(".png"):
-			additional_image_path = os.path.join(reference_directory, filename)
-			additional_images.append(additional_image_path)
 			additional_image_data = fetch_blackwhite_data(additional_image_path)
 			solutions_set.append(find_similarity(reference_image, additional_image_data))
-	similarity_threshold += sum(solutions_set) / len(solutions_set)
 
-	for filename in os.listdir(reference_directory):
-		if filename.endswith(".jpg") or filename.endswith(".png"):
-			additional_image_path = os.path.join(reference_directory, filename)
-			additional_images.append(additional_image_path)
 			additional_image_data = fetch_greyscale_data(additional_image_path)
 			solutions_set.append(find_similarity(reference_image, additional_image_data))
-	similarity_threshold += sum(solutions_set) / len(solutions_set)
+
+	similarity_threshold += sum(solutions_set) / len(solutions_set) * 3
+
 
 	try:
 		prGreen(">> Working...")
