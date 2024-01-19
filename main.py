@@ -138,7 +138,7 @@ while True:
 	print(">> Face Similarity: ", similarity_percentile, "%")
 	print(">> Similarity Threshold: ", similarity_threshold, "%")
 
-	if similarity_percentile > similarity_threshold:
+	if similarity_percentile >= similarity_threshold:
 		result = "Faces are a match."
 		break
 	else:
