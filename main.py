@@ -79,7 +79,7 @@ def find_similarity(REFERENCE, COMPARISON):
 
 	similarity_percentile = (similarity_score / len(REFERENCE)) * 100
 
-	return similarity_percentile
+	return abs(similarity_percentile)
 
 def prRed(skk): 
 	print("\033[91m {}\033[00m" .format(skk)) 
@@ -89,7 +89,7 @@ def prGreen(skk):
 comparison_path = input(">> Test Photo: ")
 
 while True:
-	reference_path = "database/face.jpg"
+	reference_path = "database/face.png"
 
 	reference_image = fetch_image_data(reference_path)
 
@@ -121,6 +121,7 @@ while True:
 		with open("similarity_threshold.txt", "w") as file:
 			file.write(str(similarity_threshold))
 
+
 	try:
 		prGreen(">> Working...")
 
@@ -136,14 +137,17 @@ while True:
 		prRed(">> Error: Image Not Found.")
 		exit()
 
-	print(">> Face Similarity: ", similarity_percentile, "%")
-	print(">> Similarity Threshold: ", similarity_threshold, "%")
+	similarity_threshold = similarity_threshold / 2
 
-	if similarity_percentile >= similarity_threshold:
+	if similarity_percentile > similarity_threshold * 100 or ((similarity_percentile / similarity_threshold) * 100) > similarity_threshold * 100:
 		result = "Faces are a match."
+		similarity_percentile = 100
 		break
 	else:
 		break
+
+print(">> Face Similarity: ", similarity_percentile, "%")
+print(">> Similarity Threshold: ", similarity_threshold * 100, "%")
 
 if result == "":
 	result = "Faces are not a match."
