@@ -121,7 +121,6 @@ while True:
 		with open("similarity_threshold.txt", "w") as file:
 			file.write(str(similarity_threshold))
 
-
 	try:
 		prGreen(">> Working...")
 
