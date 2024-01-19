@@ -77,9 +77,6 @@ def find_similarity(REFERENCE, COMPARISON):
 		else:
 			similarity_score += -1
 
-		if similarity_score < 0:
-			similarity_score = 0
-
 	similarity_percentile = (similarity_score / len(REFERENCE)) * 100
 
 	return similarity_percentile
@@ -124,6 +121,8 @@ while True:
 	similarity_threshold += sum(solutions_set) / len(solutions_set)
 
 	try:
+		prGreen(">> Working...")
+
 		comparison_image = fetch_image_data(comparison_path)
 		similarity_percentile += find_similarity(reference_image, comparison_image)
 
