@@ -142,7 +142,7 @@ while True:
 
 		for filename in os.listdir(reference_directory):
 			if filename.endswith((".jpg", ".png")):
-				prGreen(">> " + misc_counter + "/" + misc_counter_ceil)
+				prGreen(">> " + str(misc_counter) + "/" + str(misc_counter_ceil))
 
 				additional_image_path = os.path.join(reference_directory, filename)
 				additional_images.append(additional_image_path)
