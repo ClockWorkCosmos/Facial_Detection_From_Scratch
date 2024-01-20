@@ -125,7 +125,7 @@ comparison_path = input(">> Test Photo: ")
 remove_background_and_save(comparison_path)
 
 while True:
-	reference_path = "database/prime.jpg"
+	reference_path = "database/prime.png"
 	reference_image = fetch_image_data(reference_path)
 
 	remove_background_and_save(reference_path)
@@ -154,7 +154,6 @@ while True:
 
 		for filename in os.listdir(reference_directory):
 			if filename.endswith((".jpg", ".png")):
-				remove_background_and_save(additional_image_path)
 
 				prGreen(">> " + str(misc_counter) + "/" + str(misc_counter_ceil))
 
@@ -173,6 +172,8 @@ while True:
 				reference_image = fetch_greyscale_data(reference_path)
 				solutions_set.append(find_similarity(reference_image, additional_image_data))
 
+				remove_background_and_save(additional_image_path)
+
 				misc_counter += 1
 
 		similarity_threshold = sum(solutions_set) / len(solutions_set)
@@ -187,7 +188,7 @@ while True:
 	try:
 		prGreen(">> Working...")
 
-		reference_path = "database/prime.jpg"
+		reference_path = "database/prime.png"
 
 		comparison_image = fetch_image_data(comparison_path)
 		reference_image = fetch_image_data(reference_path)
