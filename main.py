@@ -97,9 +97,9 @@ def find_similarity(REFERENCE, COMPARISON):
 		comp_value = round(sum(COMPARISON[x]), 10) if isinstance(COMPARISON[x], tuple) else round(COMPARISON[x], 10)
 
 		if comp_value == ref_value:
-			similarity_score += 2
+			similarity_score += 1
 		else:
-			similarity_score += -1
+			similarity_score += -2
 
 	if similarity_score < 0:
 		similarity_score = 0
