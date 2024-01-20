@@ -116,15 +116,15 @@ while True:
 
 	reference_directory = "database"
 
-	original_reference_data = copy_image_data(reference_path)
-
-	zoom_factor = 0.33
-	zoom_effect(reference_path, zoom_factor)
-
 	if os.path.exists("similarity_threshold.txt"):
 		with open("similarity_threshold.txt", "r") as file:
 			similarity_threshold = float(file.read())
 	else:
+		original_reference_data = copy_image_data(reference_path)
+		
+		zoom_factor = 0.33
+		zoom_effect(reference_path, zoom_factor)
+		
 		additional_images = []
 		solutions_set = []
 		
