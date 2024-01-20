@@ -133,7 +133,7 @@ while True:
 		misc_counter_ceil = 0
 
 		for filename in os.listdir(reference_directory):
-			if filename.endswith((".jpg", ",png")):
+			if filename.endswith((".jpg", ".png")):
 				misc_counter_ceil += 1
 			else:
 				misc_counter_ceil += 0
