@@ -127,10 +127,23 @@ while True:
 		additional_images = []
 		solutions_set = []
 		
-		prGreen(">> Evaluating similarity threshold from reference database.")
+		prGreen(">> Evaluating similarity threshold for reference database.")
+
+		misc_counter = 0
+		misc_counter_ceil = 0
+
+		for filename in os.listdir(reference_directory):
+			if filename.endswith((".jpg", ",png")):
+				misc_counter_ceil += 1
+			else:
+				misc_counter_ceil += 0
+
+		misc_counter_ceil += -1
 
 		for filename in os.listdir(reference_directory):
 			if filename.endswith((".jpg", ".png")):
+				prGreen(">> ", misc_counter, "/", misc_counter_ceil)
+
 				additional_image_path = os.path.join(reference_directory, filename)
 				additional_images.append(additional_image_path)
 
@@ -148,6 +161,8 @@ while True:
 				additional_image_data = fetch_greyscale_data(additional_image_path)
 				solutions_set.append(find_similarity(reference_image, additional_image_data))
 				reverse_zoom_effect(additional_image_path, original_image_data)
+
+				misc_counter += 1
 
 		similarity_threshold = sum(solutions_set) / len(solutions_set) * 3
 
