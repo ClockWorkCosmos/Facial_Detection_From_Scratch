@@ -176,7 +176,7 @@ while True:
 	try:
 		prGreen(">> Working...")
 
-		reference_path = "database/face.jpg"
+		reference_path = "database/prime.jpg"
 
 		comparison_image = fetch_image_data(comparison_path)
 		similarity_percentile += find_similarity(reference_image, comparison_image)
