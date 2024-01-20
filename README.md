@@ -13,7 +13,7 @@ Usage example:
      desired face to detect looking straight ahead, against a dominantly white or blackground background (helps face stand out).
   2. Use the 'augment.py' program (small program to automatically edit photos randomly) to expand database image diversity (aids in computing precise similarity thresholds)
   3. '>> Test Photo: ' input the file path to the face you wish to use.
-  4. '>> Evaluating similarity threshold for reference database.' indicates that the program is computing how similar a photo, in various formats, has to be in comparison to the prime photo to return a positive match.
+  4. '>> Evaluating similarity threshold from reference database.' indicates that the program is computing how similar a photo, in various formats, has to be in comparison to the prime photo to return a positive match.
 
 Required modules / libraries:
   1. OS
