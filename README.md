@@ -11,7 +11,7 @@ Usage example:
   1. Create a subfolder (within this program's directory) containing some reference photos of a face you wish to detect. Have at least five hundred reference photos taken from
      slightly different angles. Name the primereference photo 'prime' with the '.png' or '.jpg' extension (change usage reference in program). Call this folder 'database'. Your prime photo should be of the
      desired face to detect looking straight ahead, against a dominantly white or blackground background (helps face stand out).
-  2. Use the 'augment.py' program (small program to automatically edit photos randomly) to expand database image diversity (aids in computing precise similarity thresholds)
+  2. Use the 'augment.py' program (small program to automatically edit photos randomly; turns small seed dataset into big dataset) to expand database image diversity (aids in computing precise similarity thresholds)
   3. '>> Test Photo: ' input the file path to the face you wish to use.
   4. '>> Evaluating similarity threshold from reference database.' indicates that the program is computing how similar a photo, in various formats, has to be in comparison to the prime photo to return a positive match.
 
