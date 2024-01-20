@@ -198,6 +198,7 @@ while True:
 		zoom_effect(comparison_path, zoom_factor)
 
 		comparison_image = fetch_image_data(comparison_path)
+		reference_image = fetch_image_data(reference_image)
 		similarity_percentile += find_similarity(reference_image, comparison_image)
 
 		reverse_zoom_effect(comparison_path, original_image_data)
