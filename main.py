@@ -23,6 +23,8 @@ additional_images = [""]
 additional_image_data = [0.00]
 solutions_set = [0.0, 0.0, 0.0, 0.0]
 
+zoom_factor = float(0.3)
+
 result = str("")
 
 def zoom_effect(image_path, zoom_factor):
@@ -120,11 +122,6 @@ while True:
 		with open("similarity_threshold.txt", "r") as file:
 			similarity_threshold = float(file.read())
 	else:
-		original_reference_data = copy_image_data(reference_path)
-		
-		zoom_factor = 0.33
-		zoom_effect(reference_path, zoom_factor)
-		
 		additional_images = []
 		solutions_set = []
 		
@@ -149,25 +146,29 @@ while True:
 				additional_images.append(additional_image_path)
 
 				additional_image_data = fetch_image_data(additional_image_path)
+				reference_image = fetch_image_data(reference_path)
 				solutions_set.append(find_similarity(reference_image, additional_image_data))
 
 				additional_image_data = fetch_blackwhite_data(additional_image_path)
+				reference_image = fetch_blackwhite_data(reference_path)
 				solutions_set.append(find_similarity(reference_image, additional_image_data))
 
 				additional_image_data = fetch_greyscale_data(additional_image_path)
+				reference_image = fetch_greyscale_data(reference_path)
 				solutions_set.append(find_similarity(reference_image, additional_image_data))
 				
 				original_image_data = copy_image_data(additional_image_path)
 				zoom_effect(additional_image_path, zoom_factor)
-				additional_image_data = fetch_greyscale_data(additional_image_path)
+				zoom_effect(reference_path, zoom_factor)
+				additional_image_data = fetch_image_data(additional_image_path)
+				reference_image = fetch_image_data(additional_image_path)
 				solutions_set.append(find_similarity(reference_image, additional_image_data))
 				reverse_zoom_effect(additional_image_path, original_image_data)
+				reverse_zoom_effect(reference_path, original_image_data)
 
 				misc_counter += 1
 
 		similarity_threshold = sum(solutions_set) / len(solutions_set) * 3
-
-		reverse_zoom_effect(reference_path, original_reference_data)
 		
 		prGreen(">> Done.")
 
@@ -184,11 +185,11 @@ while True:
 		similarity_percentile += find_similarity(reference_image, comparison_image)
 
 		comparison_image = fetch_blackwhite_data(comparison_path)
-		reference_image = fetch_blackwhite_data(reference_image)
+		reference_image = fetch_blackwhite_data(reference_path)
 		similarity_percentile += find_similarity(reference_image, comparison_image)
 
 		comparison_image = fetch_greyscale_data(comparison_path)
-		reference_image = fetch_greyscale_data(reference_image)
+		reference_image = fetch_greyscale_data(reference_path)
 		similarity_percentile += find_similarity(reference_image, comparison_image)
 
 		original_image_data = copy_image_data(comparison_path)
