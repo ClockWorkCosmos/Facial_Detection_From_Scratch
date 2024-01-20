@@ -109,7 +109,7 @@ def prGreen(skk):
 comparison_path = input(">> Test Photo: ")
 
 while True:
-	reference_path = "database/face.jpg"
+	reference_path = "database/prime.jpg"
 	original_reference_data = [0]
 	reference_image = fetch_image_data(reference_path)
 
