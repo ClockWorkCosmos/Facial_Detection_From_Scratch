@@ -37,7 +37,7 @@ def zoom_effect(image_path, zoom_factor):
 	cv2.imwrite(image_path, zoomed_img)
 
 def reverse_zoom_effect(image_path, original_data):
-	v2.imwrite(image_path, original_data)
+	cv2.imwrite(image_path, original_data)
 
 def copy_image_data(image_path):
 	img = cv2.imread(image_path)	
@@ -105,10 +105,11 @@ def prRed(skk):
 def prGreen(skk): 
 	print("\033[92m {}\033[00m" .format(skk))
 
+
 comparison_path = input(">> Test Photo: ")
 
 while True:
-	reference_path = "database/face.png"
+	reference_path = "database/face.jpg"
 	original_reference_data = [0]
 	reference_image = fetch_image_data(reference_path)
 
@@ -165,26 +166,26 @@ while True:
 		comparison_image = fetch_image_data(comparison_path)
 		similarity_percentile += find_similarity(reference_image, comparison_image)
 
-		comparison_image = fetch_blackwhite_data(copy_image_path)
+		comparison_image = fetch_blackwhite_data(comparison_path)
 		similarity_percentile += find_similarity(reference_image, comparison_image)
 
-		comparison_image = fetch_greyscale_data(copy_image_path)
+		comparison_image = fetch_greyscale_data(comparison_path)
 		similarity_percentile += find_similarity(reference_image, comparison_image)
 
 		reverse_zoom_effect(comparison_path, original_image_data)
 		reverse_zoom_effect(reference_path, original_reference_data)
+
+		similarity_threshold = similarity_threshold / 2
+
+		if similarity_percentile > similarity_threshold * 100 or ((similarity_percentile / similarity_threshold) * 100) > similarity_threshold * 100:
+			result = "Faces are a match."
+			similarity_percentile = 100
+			break
+		else:
+			break
 	except:
-		prRed(">> Error: Image Not Found.")
+		prRed(">> Error: File Not Found.")
 		exit()
-
-	similarity_threshold = similarity_threshold / 2
-
-	if similarity_percentile > similarity_threshold * 100 or ((similarity_percentile / similarity_threshold) * 100) > similarity_threshold * 100:
-		result = "Faces are a match."
-		similarity_percentile = 100
-		break
-	else:
-		break
 
 print(">> Face Similarity: ", similarity_percentile, "%")
 print(">> Similarity Threshold: ", similarity_threshold * 100, "%")
