@@ -10,7 +10,7 @@ Usage example:
   Note - Make sure face is centered in the photo and room is well lit. Prone to micro-distortions.
   1. Create a subfolder (within this program's directory) containing some reference photos of a face you wish to detect. Have at least five hundred reference photos taken from
      slightly different angles and with different backgrounds (helps significantly increase accuracy of facial detection). Name the prime reference photo 'prime' with the '.png' or '.jpg' extension (change usage
-     reference in program). Call this folder 'database'. Your prime photo should be of the desired face to detect looking straight ahead, against a solid, not white or black, background (helps face stand out).
+     reference in program). Call this folder 'database'. Your prime photo should be of the desired face to detect looking straight ahead, centered in frame, use camera flash in a dark room to make the face stand out         more.
      
   3. Use the 'augment.py' program (small program to automatically edit photos randomly; turns small seed dataset into big dataset) to expand database image diversity (aids in computing precise similarity thresholds)
   4. '>> Test Photo: ' input the file path to the face you wish to use.
