@@ -126,6 +126,8 @@ while True:
 	else:
 		additional_images = []
 		solutions_set = []
+		
+		prGreen(">> Evaluating similarity threshold for reference database.")
 
 		for filename in os.listdir(reference_directory):
 			if filename.endswith((".jpg", ".png")):
@@ -150,12 +152,16 @@ while True:
 		similarity_threshold = sum(solutions_set) / len(solutions_set) * 3
 
 		reverse_zoom_effect(reference_path, original_reference_data)
+		
+		prGreen(">> Done.")
 
 		with open("similarity_threshold.txt", "w") as file:
 			file.write(str(similarity_threshold))
 
 	try:
 		prGreen(">> Working...")
+
+		reference_path = "database/face.jpg"
 
 		comparison_image = fetch_image_data(comparison_path)
 		similarity_percentile += find_similarity(reference_image, comparison_image)
@@ -178,12 +184,11 @@ while True:
 		reverse_zoom_effect(comparison_path, original_image_data)
 		reverse_zoom_effect(reference_path, original_reference_data)
 
-		similarity_percentile = (similaity_percentile / (similarity_percentile * 4)) * 100
+		similarity_percentile = similarity_percentile / 10
 		similarity_threshold = similarity_threshold / 2
 
 		if similarity_percentile >= similarity_threshold:
 			result = "Faces are a match."
-			similarity_percentile = 100
 			break
 		else:
 			break
