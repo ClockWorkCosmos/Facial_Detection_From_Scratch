@@ -168,17 +168,20 @@ while True:
 
 		original_image_data = copy_image_data(comparison_path)
 		original_reference_data = copy_image_data(reference_path)
+
 		zoom_effect(reference_path, zoom_factor)
 		zoom_effect(comparison_path, zoom_factor)
-		comparison_image = fetch_greyscale_data(comparison_path)
+
+		comparison_image = fetch_image_data(comparison_path)
 		similarity_percentile += find_similarity(reference_image, comparison_image)
 
 		reverse_zoom_effect(comparison_path, original_image_data)
 		reverse_zoom_effect(reference_path, original_reference_data)
 
+		similarity_percentile = (similaity_percentile / (similarity_percentile * 4)) * 100
 		similarity_threshold = similarity_threshold / 2
 
-		if similarity_percentile > similarity_threshold * 100 or ((similarity_percentile / similarity_threshold) * 100) > similarity_threshold * 100:
+		if similarity_percentile >= similarity_threshold:
 			result = "Faces are a match."
 			similarity_percentile = 100
 			break
@@ -189,7 +192,7 @@ while True:
 		exit()
 
 print(">> Face Similarity: ", similarity_percentile, "%")
-print(">> Similarity Threshold: ", similarity_threshold * 100, "%")
+print(">> Similarity Threshold: ", similarity_threshold, "%")
 
 if result == "":
 	result = "Faces are not a match."
