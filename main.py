@@ -25,27 +25,9 @@ solutions_set = [0.0, 0.0, 0.0, 0.0]
 
 solutions_set_ii = [0.00]
 
-zoom_factor = float(0.3)
+image_size = int(300)
 
 result = str("")
-
-def zoom_effect(image_path, zoom_factor):
-	img = cv2.imread(image_path)
-
-	height, width = img.shape[:2]
-	center = (width // 2, height // 2)
-
-	zoom_matrix = cv2.getRotationMatrix2D(center, 1, zoom_factor)
-
-	zoomed_img = cv2.warpAffine(img, zoom_matrix, (width, height))
-	cv2.imwrite(image_path, zoomed_img)
-
-def reverse_zoom_effect(image_path, original_data):
-	cv2.imwrite(image_path, original_data)
-
-def copy_image_data(image_path):
-	img = cv2.imread(image_path)	
-	return img
 
 def fetch_image_data(IMAGE_PATH):
 	image = pygame.image.load(IMAGE_PATH)
@@ -97,15 +79,23 @@ def find_similarity(REFERENCE, COMPARISON):
 		comp_value = round(sum(COMPARISON[x]), 10) if isinstance(COMPARISON[x], tuple) else round(COMPARISON[x], 10)
 
 		if comp_value == ref_value:
-			similarity_score += 1
+			similarity_score += 2
 		else:
-			similarity_score += -2
+			similarity_score += -1
 
 	if similarity_score < 0:
 		similarity_score = 0
 
-	similarity_percentile = (similarity_score / len(REFERENCE)) * 3
+	similarity_percentile = (similarity_score / ((image_size * image_size) * 3)) * 100
 	return abs(similarity_percentile)
+
+def remove_background(image_path):
+	image = cv2.imread(image_path)
+	gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+	_, thresh = cv2.threshold(gray, 240, 255, cv2.THRESH_BINARY_INV)
+	result = cv2.bitwise_and(image, image, mask=thresh)
+
+	return result
 
 def prRed(skk): 
 	print("\033[91m {}\033[00m" .format(skk)) 
@@ -118,7 +108,6 @@ comparison_path = input(">> Test Photo: ")
 
 while True:
 	reference_path = "database/prime.png"
-	original_reference_data = [0]
 	reference_image = fetch_image_data(reference_path)
 
 	reference_directory = "database"
@@ -161,20 +150,12 @@ while True:
 				additional_image_data = fetch_greyscale_data(additional_image_path)
 				reference_image = fetch_greyscale_data(reference_path)
 				solutions_set.append(find_similarity(reference_image, additional_image_data))
-				
-				original_image_data = copy_image_data(additional_image_path)
-				original_reference_data = copy_image_data(reference_path)
-				zoom_effect(additional_image_path, zoom_factor)
-				zoom_effect(reference_path, zoom_factor)
-				additional_image_data = fetch_image_data(additional_image_path)
-				reference_image = fetch_image_data(additional_image_path)
-				solutions_set.append(find_similarity(reference_image, additional_image_data))
-				reverse_zoom_effect(additional_image_path, original_image_data)
-				reverse_zoom_effect(reference_path, original_reference_data)
 
 				misc_counter += 1
 
-		similarity_threshold = (sum(solutions_set) / len(solutions_set)) * 100
+		similarity_threshold = sum(solutions_set) / len(solutions_set)
+
+		similarity_threshold = (similarity_threshold + 50.0) / 2
 
 		prGreen(">> Done.")
 
@@ -197,25 +178,11 @@ while True:
 		comparison_image = fetch_greyscale_data(comparison_path)
 		reference_image = fetch_greyscale_data(reference_path)
 		solutions_set_ii.append(find_similarity(reference_image, comparison_image))
-
-		original_image_data = copy_image_data(comparison_path)
-		original_reference_data = copy_image_data(reference_path)
-
-		zoom_effect(reference_path, zoom_factor)
-		zoom_effect(comparison_path, zoom_factor)
-
-		comparison_image = fetch_image_data(comparison_path)
-		reference_image = fetch_image_data(reference_path)
-		solutions_set_ii.append(find_similarity(reference_image, comparison_image))
-
-		reverse_zoom_effect(comparison_path, original_image_data)
-		reverse_zoom_effect(reference_path, original_reference_data)
-
-		similarity_percentile = (sum(solutions_set_ii) / len(solutions_set_ii)) * 100
-
-		similarity_threshold /= 4
+		
+		similarity_percentile = sum(solutions_set_ii) / len(solutions_set_ii)
 
 		if similarity_percentile >= similarity_threshold:
+			similarity_percentile = 100
 			result = "Faces are a match."
 			break
 		else:
