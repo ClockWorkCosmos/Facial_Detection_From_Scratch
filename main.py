@@ -127,7 +127,7 @@ while True:
 		additional_images = []
 		solutions_set = []
 		
-		prGreen(">> Evaluating similarity threshold for reference database.")
+		prGreen(">> Evaluating similarity threshold from reference database.")
 
 		for filename in os.listdir(reference_directory):
 			if filename.endswith((".jpg", ".png")):
