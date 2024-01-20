@@ -180,12 +180,15 @@ while True:
 		reference_path = "database/prime.jpg"
 
 		comparison_image = fetch_image_data(comparison_path)
+		reference_image = fetch_image_data(reference_image)
 		similarity_percentile += find_similarity(reference_image, comparison_image)
 
 		comparison_image = fetch_blackwhite_data(comparison_path)
+		reference_image = fetch_blackwhite_data(reference_image)
 		similarity_percentile += find_similarity(reference_image, comparison_image)
 
 		comparison_image = fetch_greyscale_data(comparison_path)
+		reference_image = fetch_greyscale_data(reference_image)
 		similarity_percentile += find_similarity(reference_image, comparison_image)
 
 		original_image_data = copy_image_data(comparison_path)
@@ -200,6 +203,7 @@ while True:
 		reverse_zoom_effect(comparison_path, original_image_data)
 		reverse_zoom_effect(reference_path, original_reference_data)
 
+		similarity_percentile /= 4
 		similarity_threshold = similarity_threshold / 4
 
 		if similarity_percentile >= similarity_threshold:
