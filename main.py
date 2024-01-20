@@ -92,10 +92,11 @@ def find_similarity(REFERENCE, COMPARISON):
 		ref_value = round(sum(REFERENCE[x]), 10) if isinstance(REFERENCE[x], tuple) else round(REFERENCE[x], 10)
 		comp_value = round(sum(COMPARISON[x]), 10) if isinstance(COMPARISON[x], tuple) else round(COMPARISON[x], 10)
 
-		if m.isclose(comp_value, ref_value):
+		if comp_value == ref_value:
 			similarity_score += 1
 		else:
 			similarity_score += 0
+
 	similarity_percentile = (similarity_score / len(REFERENCE)) * 100
 	return abs(similarity_percentile)
 
@@ -199,10 +200,10 @@ while True:
 		reverse_zoom_effect(comparison_path, original_image_data)
 		reverse_zoom_effect(reference_path, original_reference_data)
 
-		similarity_percentile = similarity_percentile / 10
-		similarity_threshold = similarity_threshold / 2
+		similarity_threshold = similarity_threshold / 4
 
 		if similarity_percentile >= similarity_threshold:
+			similarity_percentile = 100
 			result = "Faces are a match."
 			break
 		else:
