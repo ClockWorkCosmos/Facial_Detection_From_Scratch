@@ -1,5 +1,6 @@
 import cv2
 import math as m
+import numpy as np
 import os
 import pygame
 import random as r
@@ -89,13 +90,29 @@ def find_similarity(REFERENCE, COMPARISON):
 	similarity_percentile = (similarity_score / ((image_size * image_size) * 3)) * 100
 	return abs(similarity_percentile)
 
-def remove_background(image_path):
-	image = cv2.imread(image_path)
-	gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-	_, thresh = cv2.threshold(gray, 240, 255, cv2.THRESH_BINARY_INV)
-	result = cv2.bitwise_and(image, image, mask=thresh)
+def remove_background_and_save(image_path):
+	if not os.path.exists(image_path):
+		print(f"Error: Image file does not exist at {image_path}")
+		return
 
-	return result
+	image = cv2.imread(image_path)
+
+	if image is None:
+		print(f"Error: Unable to load image at {image_path}")
+		return
+
+	image = cv2.imread(image_path)
+
+	lower_skin = np.array([0, 10, 40], dtype=np.uint8)
+	upper_skin = np.array([30, 255, 255], dtype=np.uint8)
+
+	hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
+
+	mask_skin = cv2.inRange(hsv, lower_skin, upper_skin)
+
+	result = cv2.bitwise_and(image, image, mask=mask_skin)
+
+	cv2.imwrite(image_path, result)
 
 def prRed(skk): 
 	print("\033[91m {}\033[00m" .format(skk)) 
@@ -105,10 +122,13 @@ def prGreen(skk):
 
 
 comparison_path = input(">> Test Photo: ")
+remove_background_and_save(comparison_path)
 
 while True:
-	reference_path = "database/prime.png"
+	reference_path = "database/prime.jpg"
 	reference_image = fetch_image_data(reference_path)
+
+	remove_background_and_save(reference_path)
 
 	reference_directory = "database"
 
@@ -134,6 +154,8 @@ while True:
 
 		for filename in os.listdir(reference_directory):
 			if filename.endswith((".jpg", ".png")):
+				remove_background_and_save(additional_image_path)
+
 				prGreen(">> " + str(misc_counter) + "/" + str(misc_counter_ceil))
 
 				additional_image_path = os.path.join(reference_directory, filename)
@@ -165,7 +187,7 @@ while True:
 	try:
 		prGreen(">> Working...")
 
-		reference_path = "database/prime.png"
+		reference_path = "database/prime.jpg"
 
 		comparison_image = fetch_image_data(comparison_path)
 		reference_image = fetch_image_data(reference_path)
