@@ -23,6 +23,8 @@ additional_images = [""]
 additional_image_data = [0.00]
 solutions_set = [0.0, 0.0, 0.0, 0.0]
 
+solutions_set_ii = [0.00]
+
 zoom_factor = float(0.3)
 
 result = str("")
@@ -95,11 +97,14 @@ def find_similarity(REFERENCE, COMPARISON):
 		comp_value = round(sum(COMPARISON[x]), 10) if isinstance(COMPARISON[x], tuple) else round(COMPARISON[x], 10)
 
 		if comp_value == ref_value:
-			similarity_score += 1
+			similarity_score += 2
 		else:
-			similarity_score += 0
+			similarity_score += -1
 
-	similarity_percentile = (similarity_score / len(REFERENCE)) * 100
+	if similarity_score < 0:
+		similarity_score = 0
+
+	similarity_percentile = (similarity_score / len(REFERENCE)) * 3
 	return abs(similarity_percentile)
 
 def prRed(skk): 
@@ -112,7 +117,7 @@ def prGreen(skk):
 comparison_path = input(">> Test Photo: ")
 
 while True:
-	reference_path = "database/prime.jpg"
+	reference_path = "database/prime.png"
 	original_reference_data = [0]
 	reference_image = fetch_image_data(reference_path)
 
@@ -158,18 +163,19 @@ while True:
 				solutions_set.append(find_similarity(reference_image, additional_image_data))
 				
 				original_image_data = copy_image_data(additional_image_path)
+				original_reference_data = copy_image_data(reference_path)
 				zoom_effect(additional_image_path, zoom_factor)
 				zoom_effect(reference_path, zoom_factor)
 				additional_image_data = fetch_image_data(additional_image_path)
 				reference_image = fetch_image_data(additional_image_path)
 				solutions_set.append(find_similarity(reference_image, additional_image_data))
 				reverse_zoom_effect(additional_image_path, original_image_data)
-				reverse_zoom_effect(reference_path, original_image_data)
+				reverse_zoom_effect(reference_path, original_reference_data)
 
 				misc_counter += 1
 
-		similarity_threshold = sum(solutions_set) / len(solutions_set) * 3
-		
+		similarity_threshold = (sum(solutions_set) / len(solutions_set)) * 100
+
 		prGreen(">> Done.")
 
 		with open("similarity_threshold.txt", "w") as file:
@@ -178,19 +184,19 @@ while True:
 	try:
 		prGreen(">> Working...")
 
-		reference_path = "database/prime.jpg"
+		reference_path = "database/prime.png"
 
 		comparison_image = fetch_image_data(comparison_path)
 		reference_image = fetch_image_data(reference_path)
-		similarity_percentile += find_similarity(reference_image, comparison_image)
+		solutions_set_ii.append(find_similarity(reference_image, comparison_image))
 
 		comparison_image = fetch_blackwhite_data(comparison_path)
 		reference_image = fetch_blackwhite_data(reference_path)
-		similarity_percentile += find_similarity(reference_image, comparison_image)
+		solutions_set_ii.append(find_similarity(reference_image, comparison_image))
 
 		comparison_image = fetch_greyscale_data(comparison_path)
 		reference_image = fetch_greyscale_data(reference_path)
-		similarity_percentile += find_similarity(reference_image, comparison_image)
+		solutions_set_ii.append(find_similarity(reference_image, comparison_image))
 
 		original_image_data = copy_image_data(comparison_path)
 		original_reference_data = copy_image_data(reference_path)
@@ -200,16 +206,16 @@ while True:
 
 		comparison_image = fetch_image_data(comparison_path)
 		reference_image = fetch_image_data(reference_path)
-		similarity_percentile += find_similarity(reference_image, comparison_image)
+		solutions_set_ii.append(find_similarity(reference_image, comparison_image))
 
 		reverse_zoom_effect(comparison_path, original_image_data)
 		reverse_zoom_effect(reference_path, original_reference_data)
 
-		similarity_percentile /= 4
-		similarity_threshold = similarity_threshold / 4
+		similarity_percentile = (sum(solutions_set_ii) / len(solutions_set_ii)) * 100
+
+		similarity_threshold /= 4
 
 		if similarity_percentile >= similarity_threshold:
-			similarity_percentile = 100
 			result = "Faces are a match."
 			break
 		else:
