@@ -1,12 +1,17 @@
-import cv2
-import math as m
-import numpy as np
-import os
-import pygame
-import random as r
-import termcolor
-from termcolor import colored, cprint
-from pygame.locals import *
+try:
+	import cv2
+	import math as m
+	import numpy as np
+	import os
+	import pygame
+	import random as r
+	import termcolor
+	from termcolor import colored, cprint
+	from pygame.locals import *
+except:
+	print(">> Required modules and libraries not installed. Please see 'README.md' for a list of requirements. ")
+	input("")
+	exit()
 
 pygame.init()
 
@@ -44,11 +49,9 @@ def fetch_image_data(IMAGE_PATH):
 
 def fetch_greyscale_data(IMAGE_PATH):
 	image = pygame.image.load(IMAGE_PATH)
-
 	width, height = image.get_size()
 
 	greyscale_data = []
-
 	for y in range(height):
 		for x in range(width):
 			pixel = image.get_at((x, y))
@@ -58,11 +61,9 @@ def fetch_greyscale_data(IMAGE_PATH):
 
 def fetch_blackwhite_data(IMAGE_PATH, threshold=128):
 	image = pygame.image.load(IMAGE_PATH)
-
 	width, height = image.get_size()
 
 	blackwhite_data = []
-
 	for y in range(height):
 		for x in range(width):
 			pixel = image.get_at((x, y))
@@ -79,47 +80,19 @@ def find_similarity(REFERENCE, COMPARISON):
 		ref_value = round(sum(REFERENCE[x]), 10) if isinstance(REFERENCE[x], tuple) else round(REFERENCE[x], 10)
 		comp_value = round(sum(COMPARISON[x]), 10) if isinstance(COMPARISON[x], tuple) else round(COMPARISON[x], 10)
 
-		if comp_value == ref_value:
-			similarity_score += 2
+		if comp_value == ref_value or m.isclose(comp_value, ref_value):
+			similarity_score += 1
 		else:
-			similarity_score += -1
-
-	if similarity_score < 0:
-		similarity_score = 0
+			similarity_score += 0
 
 	similarity_percentile = (similarity_score / ((image_size * image_size) * 3)) * 100
 	return abs(similarity_percentile)
-
-def remove_background_and_save(image_path):
-	if not os.path.exists(image_path):
-		print(f"Error: Image file does not exist at {image_path}")
-		return
-
-	image = cv2.imread(image_path)
-
-	if image is None:
-		print(f"Error: Unable to load image at {image_path}")
-		return
-
-	image = cv2.imread(image_path)
-
-	lower_skin = np.array([0, 10, 40], dtype=np.uint8)
-	upper_skin = np.array([30, 255, 255], dtype=np.uint8)
-
-	hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
-
-	mask_skin = cv2.inRange(hsv, lower_skin, upper_skin)
-
-	result = cv2.bitwise_and(image, image, mask=mask_skin)
-
-	cv2.imwrite(image_path, result)
 
 def prRed(skk): 
 	print("\033[91m {}\033[00m" .format(skk)) 
 
 def prGreen(skk): 
 	print("\033[92m {}\033[00m" .format(skk))
-
 
 comparison_path = input(">> Test Photo: ")
 remove_background_and_save(comparison_path)
@@ -172,12 +145,9 @@ while True:
 				reference_image = fetch_greyscale_data(reference_path)
 				solutions_set.append(find_similarity(reference_image, additional_image_data))
 
-				remove_background_and_save(additional_image_path)
-
 				misc_counter += 1
 
 		similarity_threshold = sum(solutions_set) / len(solutions_set)
-
 		similarity_threshold = (similarity_threshold + 50.0) / 2
 
 		prGreen(">> Done.")
