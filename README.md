@@ -17,3 +17,12 @@ Usage example:
 
   8. If the returned similarity percentile for the inputted photo is lesser than the similarity threshold, return 'Faces are not a match.' .
   9. Else if the percentage is greater than or equal to the threshold, return 'Faces are a match.' .
+
+Required modules / libraries:
+	* cv2
+	* math
+	* numpy
+	* os
+	* pygame
+	* random
+	* termcolor
