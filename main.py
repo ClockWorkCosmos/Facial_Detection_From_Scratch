@@ -95,13 +95,10 @@ def prGreen(skk):
 	print("\033[92m {}\033[00m" .format(skk))
 
 comparison_path = input(">> Test Photo: ")
-remove_background_and_save(comparison_path)
 
 while True:
 	reference_path = "database/prime.png"
 	reference_image = fetch_image_data(reference_path)
-
-	remove_background_and_save(reference_path)
 
 	reference_directory = "database"
 
